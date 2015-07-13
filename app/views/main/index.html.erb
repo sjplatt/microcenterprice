@@ -1,0 +1,9 @@
+<h1>Microcenter Prices</h1>
+<table>
+<%@solution.zip(@solution_price).each do |sol,price|%>
+<tr>
+  <td><%=sol%></td>
+  <td><%=price%></td>
+</tr>
+<%end%>
+</table>
