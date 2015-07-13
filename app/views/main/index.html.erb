@@ -1,9 +1,19 @@
 <h1>Microcenter Prices</h1>
+<div class="datagrid">
 <table>
+<thead><tr><th>Link</th><th>Price</th></tr></thead>
+<tfoot><tr><td colspan="2"><div id="no-paging">&nbsp;</div></tr></tfoot>
+<tbody>
 <%@solution.zip(@solution_price).each do |sol,price|%>
-<tr>
+<tr class="alt">
   <td><%=sol%></td>
-  <td><%=price%></td>
+  <%if price.to_i == 0%>
+  <td>No Price</td>
+  <%else%>
+  <td>$<%=price[0..price.length-3] + 
+  "." + price[price.length-2,price.length]%></td>
+  <%end%>
 </tr>
 <%end%>
-</table>
+</tbody>
+</table></div>

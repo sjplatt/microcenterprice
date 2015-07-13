@@ -2,14 +2,14 @@ require 'json'
 require 'open-uri'
 require 'nokogiri'
 require 'google-search'
-#require 'slack-notifier'
+require 'slack-notifier'
 class MainController < ApplicationController
 def google_info
   google_links = []
   count = 0
   begin
     Google::Search::Web.new(:query => ("980 site:microcenter.com")).each do |web|
-        if count<20
+        if count<25
           google_links << web.uri
           count+=1
         else
@@ -22,7 +22,7 @@ def google_info
 end
 
 def send_to_slack(price,link)
-  notifier = Slack::Notifier.new "https://hooks.slack.com/services/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"
+  notifier = Slack::Notifier.new ENV["WEBHOOK"]
   notifier.ping link +  "\n" + price
 end
 
@@ -46,15 +46,14 @@ end
 
 def process_link(link)
   page = Nokogiri::HTML.parse(open(link))
-  if page.css("#options") && link.downcase.include?("gtx")
+  if page.css("#options") && 
+    link.downcase.include?("gtx") && link.downcase.include?("product")
     options_css = page.css("#options")
     if options_css.css("#pricing")
       price_of_item = options_css.css("#pricing").text
-      if price_of_item.gsub("$","").to_i != 0
-        @solution<<link
-        @solution_price<<price_of_item
-      end
-      #output_to_text_file(price_of_item,link)
+      @solution<<link
+      @solution_price<<price_of_item.gsub("$","")
+      output_to_text_file(price_of_item,link)
     end
   end
 end
@@ -66,6 +65,7 @@ def start_method()
   google_links.each do |link|
     process_link(link)
   end
+  @solution_price,@solution = @solution_price.zip(@solution).sort.transpose
 end
 
 
