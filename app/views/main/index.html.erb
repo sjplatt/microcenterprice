@@ -6,7 +6,7 @@
 <tbody>
 <%@solution.zip(@solution_price).each do |sol,price|%>
 <tr class="alt">
-  <td><%=sol%></td>
+  <td><a href= <%=sol%>> </a></td>
   <%if price.to_i == 0%>
   <td>No Price</td>
   <%else%>
