@@ -45,15 +45,16 @@ def output_to_text_file(price,link)
 end
 
 def process_link(link)
-  page = Nokogiri::HTML.parse(open(link))
-  if page.css("#options") && 
-    link.downcase.include?("gtx") && link.downcase.include?("product")
-    options_css = page.css("#options")
-    if options_css.css("#pricing")
-      price_of_item = options_css.css("#pricing").text
-      @solution<<link
-      @solution_price<<price_of_item.gsub("$","")
-      #output_to_text_file(price_of_item,link)
+  if link.downcase.include?("gtx") && link.downcase.include?("product")
+    page = Nokogiri::HTML.parse(open(link))
+    if page.css("#options")
+      options_css = page.css("#options")
+      if options_css.css("#pricing")
+        price_of_item = options_css.css("#pricing").text
+        @solution<<link
+        @solution_price<<price_of_item.gsub("$","")
+        #output_to_text_file(price_of_item,link)
+      end
     end
   end
 end
