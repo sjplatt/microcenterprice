@@ -2,7 +2,7 @@ require 'json'
 require 'open-uri'
 require 'nokogiri'
 require 'google-search'
-require 'slack-notifier'
+#require 'slack-notifier'
 class MainController < ApplicationController
 def google_info
   google_links = []
@@ -53,7 +53,7 @@ def process_link(link)
       price_of_item = options_css.css("#pricing").text
       @solution<<link
       @solution_price<<price_of_item.gsub("$","")
-      output_to_text_file(price_of_item,link)
+      #output_to_text_file(price_of_item,link)
     end
   end
 end
