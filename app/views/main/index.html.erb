@@ -17,3 +17,21 @@
 <%end%>
 </tbody>
 </table></div>
+<div class="datagrid">
+<table>
+<thead><tr><th>Link</th><th>Price</th></tr></thead>
+<tfoot><tr><td colspan="2"><div id="no-paging">&nbsp;</div></tr></tfoot>
+<tbody>
+<%@solution970.zip(@solution_price970).each do |sol,price|%>
+<tr class="alt">
+  <td><a href= <%=sol%>><%=sol%> </a></td>
+  <%if price.to_i == 0%>
+  <td>No Price</td>
+  <%else%>
+  <td>$<%=price[0..price.length-3] + 
+  "." + price[price.length-2,price.length]%></td>
+  <%end%>
+</tr>
+<%end%>
+</tbody>
+</table></div>
